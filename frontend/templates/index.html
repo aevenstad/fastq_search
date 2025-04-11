@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Locator and Copier</title>
+  <style>
+    .file-list {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Locate and Copy Files</h1>
+  
+  <label for="list-dir">Directory containing the list file:</label>
+  <input type="text" id="list-dir" value="" placeholder="Enter directory path">
+  
+  <br><br>
+
+  <!-- Dropdown to select file suffix -->
+  <label for="suffix">Choose a file suffix:</label>
+  <select id="suffix">
+    <option value="">All Files</option>
+    <option value=".fastq.gz">.fastq.gz</option>
+    <option value=".fasta">.fasta</option>
+    <option value=".txt">.txt</option>
+  </select>
+  
+  <button onclick="loadFiles()">Load Files</button>
+  <div id="file-list"></div>
+  <button onclick="copyFiles()">Copy Selected Files</button>
+
+  <script>
+    function loadFiles() {
+      const listDir = document.getElementById('list-dir').value || './';
+      const suffix = document.getElementById('suffix').value;
+
+      // Fetch the list of files from the backend, passing the listDir and suffix
+      fetch(`/locate_files?list_dir=${encodeURIComponent(listDir)}&suffix=${encodeURIComponent(suffix)}`)
+        .then(response => response.json())
+        .then(data => {
+          const fileListDiv = document.getElementById('file-list');
+          fileListDiv.innerHTML = ''; // Clear previous results
+
+          // Display each file with its size
+          data.forEach((fileData) => {
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = fileData.file;
+            checkbox.id = fileData.file;
+            const label = document.createElement('label');
+            label.htmlFor = fileData.file;
+            label.innerText = `${fileData.file} (${fileData.size})`;  // Display file size
+            fileListDiv.appendChild(checkbox);
+            fileListDiv.appendChild(label);
+            fileListDiv.appendChild(document.createElement('br'));
+          });
+        });
+    }
+
+    function copyFiles() {
+      const listDir = document.getElementById('list-dir').value || './';
+
+      // Get selected files and send them to the backend for copying
+      const selectedFiles = [];
+      const checkboxes = document.querySelectorAll('#file-list input[type="checkbox"]:checked');
+      checkboxes.forEach((checkbox) => {
+        selectedFiles.push(checkbox.value);
+      });
+
+      fetch('/copy_files', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          files: selectedFiles,
+          list_dir: listDir,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+      });
+    }
+  </script>
+</body>
+</html>
+
