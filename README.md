@@ -1,9 +1,11 @@
 # fastq_search
 
 ## Overview
-The Fastq Search application is a desktop application built using PyQt5 for the graphical user interface (GUI) and Flask for the backend server. 
-The main function is to locate fastq files on my local machine. I often run into the issue of having to find fastq files for a set of samples where the files can be scattered in different directories.
-This application solves this by taking a list of sample identifiers (or any string) and printing a list of files matching the criteria that can be easily copied.
+The Fastq Search application is a desktop application built using PyQt5 for the graphical user interface (GUI) and Flask for the backend server.  
+  
+The main function is to locate fastq files on my local machine. I often run into the issue of having to find fastq files for a set of samples where the files can be scattered in different directories.  
+  
+This application solves this by taking a list of sample identifiers (or any string) and printing files matching the criteria, the files can then be easily copied.
 
 ## Installation
 1. Clone the repository:
