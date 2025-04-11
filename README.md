@@ -1,24 +1,9 @@
-# Fastq Search Application
+# fastq_search
 
 ## Overview
-The Fastq Search application is a desktop application built using PyQt5 for the graphical user interface (GUI) and Flask for the backend server. It is designed to facilitate the search and management of FASTQ files, which are commonly used in bioinformatics for storing nucleotide sequences.
-
-## Project Structure
-```
-fastq_search
-├── backend
-│   ├── app.py                # Main application logic for PyQt5 and Flask
-│   ├── copy_fastq.py         # Logic for handling FASTQ file operations
-│   ├── requirements.txt       # Python dependencies for the backend
-│   └── __init__.py           # Marks the backend directory as a package
-├── frontend
-│   ├── static                # Directory for static files (CSS/JS)
-│   ├── templates             # Directory for HTML templates
-│   └── __init__.py           # Marks the frontend directory as a package
-├── .gitignore                # Files and directories to be ignored by Git
-├── README.md                 # Documentation for the project
-└── LICENSE                   # Licensing information for the project
-```
+The Fastq Search application is a desktop application built using PyQt5 for the graphical user interface (GUI) and Flask for the backend server. 
+The main function is to locate fastq files on my local machine. I often run into the issue of having to find fastq files for a set of samples where the files can be scattered in different directories.
+This application solves this by taking a list of sample identifiers (or any string) and printing a list of files matching the criteria that can be easily copied.
 
 ## Installation
 1. Clone the repository:
@@ -30,7 +15,7 @@ fastq_search
 2. Create a virtual environment (optional but recommended):
    ```
    python3 -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   source venv/bin/activate
    ```
 
 3. Install the required dependencies:
@@ -39,17 +24,26 @@ fastq_search
    ```
 
 ## Usage
-1. Start the Flask server:
+1. Create a text file called `list` with the sample identifiers you want to copy:
    ```
-   python3 backend/copy_fastq.py
-   ```
-
-2. Launch the PyQt5 application:
-   ```
-   python3 backend/app.py
+   sample01
+   sample02
+   sample03
    ```
 
-3. The application will open a window where you can interact with the FASTQ file management features.
+2. Start the Flask server:
+   ```
+   python3 fastq_search/backend/copy_fastq.py
+   ```
+
+3. In a web browser go to `http://127.0.0.1:5000/` and enter the full path to the directory containing `list.
+   
+   Chose the suffix for the file type you want to search for and click `Load files`.  
+
+   Select the files you want to copy and click `Copy selected files`.  
+
+   The files will be copied to the directory with `list`  
+   
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
